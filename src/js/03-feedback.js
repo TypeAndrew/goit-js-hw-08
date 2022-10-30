@@ -50,9 +50,12 @@ import throttle from 'lodash.throttle';
         let parsedSettings = JSON.parse(settings);
 
         let getEl = (selector) => document.querySelector(selector);
-        getEl("input[name=email]").value = parsedSettings.email;
-        getEl("textarea[name=message]").value = parsedSettings.message;
-    
+        if (parsedSettings.email !== undefined) { 
+                getEl("input[name=email]").value = parsedSettings.email;
+        };
+        if (parsedSettings.message !== undefined) {
+            getEl("textarea[name=message]").value = parsedSettings.message;
+        };    
     }
 
     listenReload() {
