@@ -1,7 +1,20 @@
 import throttle from 'lodash.throttle';
  
- class InputSaver {  
+class InputSaver {
     
+     
+    pushSubmeet() {
+        let getEl = (selector) => document.querySelector(selector);
+        getEl('button[type=submit]').addEventListener('click', () => {
+             
+            let settings = localStorage.getItem("feedback-form-state");
+            let parsedSettings = JSON.parse(settings);
+             
+            console.log(parsedSettings);
+            localStorage.clear();
+        });
+    };
+
      
     CreateState(typeEL,valueEl) {
         
@@ -51,7 +64,7 @@ import throttle from 'lodash.throttle';
 
         let getEl = (selector) => document.querySelector(selector);
         if (parsedSettings.email !== undefined) { 
-                getEl("input[name=email]").value = parsedSettings.email;
+            getEl("input[name=email]").value = parsedSettings.email;
         };
         if (parsedSettings.message !== undefined) {
             getEl("textarea[name=message]").value = parsedSettings.message;
@@ -65,7 +78,7 @@ import throttle from 'lodash.throttle';
      init() {
         this.listenReload(); 
         this.listenInput();
-        
+         this.pushSubmeet();
     }
 };
 
