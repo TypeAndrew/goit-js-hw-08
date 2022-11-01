@@ -1,84 +1,87 @@
 import throttle from 'lodash.throttle';
- 
+
 class InputSaver {
-    
-     
+
+
     pushSubmeet() {
         let getEl = (selector) => document.querySelector(selector);
         getEl('button[type=submit]').addEventListener('click', () => {
-             
+
             let settings = localStorage.getItem("feedback-form-state");
             let parsedSettings = JSON.parse(settings);
-             
+
             console.log(parsedSettings);
             localStorage.clear();
         });
     };
 
-     
-    CreateState(typeEL,valueEl) {
-        
+
+    CreateState(typeEL, valueEl) {
+
         let settings = JSON.parse(localStorage.getItem("feedback-form-state"));
         if (settings === null) {
             settings = {
                 name: "",
                 message: ""
-            };  
+            };
         }
-        
+
         if (typeEL === 'email') {
             settings.email = valueEl;
-           // console.log(typeEl);
-        }    
+            // console.log(typeEl);
+        }
         if (typeEL === 'textarea') {
             settings.message = valueEl;
             //console.log(valueEl);
-        }   
-        
+        }
+
         localStorage.setItem("feedback-form-state", JSON.stringify(settings));
-        console.log(settings);
+        //console.log(settings);
     }
 
 
     listenInput() {
         let getEl = (selector) => document.querySelector(selector);
-        getEl('.feedback-form').addEventListener('input', throttle(()=> {
+        getEl('.feedback-form').addEventListener('input', throttle(() => {
             if (event !== undefined) {
-                console.log(event.target);
-                
+                //console.log(event.target);
+
                 let valueEl = event.target.value;
                 let typeEL = event.target.type;
-                
+
                 // console.log(typeEL);
-                this.CreateState(typeEL,valueEl);
-                }   
-            
-        },500));
+                this.CreateState(typeEL, valueEl);
+            }
+
+        }, 500));
     }
-        
+
     getStoreValues() {
         // console.log(event.target);
-        console.log('!!!!!!');
-        let settings = localStorage.getItem("feedback-form-state"); 
+        //console.log('!!!!!!');
+        let settings = localStorage.getItem("feedback-form-state");
         let parsedSettings = JSON.parse(settings);
 
         let getEl = (selector) => document.querySelector(selector);
-        if (parsedSettings.email !== undefined) { 
-            getEl("input[name=email]").value = parsedSettings.email;
-        };
-        if (parsedSettings.message !== undefined) {
-            getEl("textarea[name=message]").value = parsedSettings.message;
-        };    
+
+        if (parsedSettings !== null) {
+            if (parsedSettings.email !== undefined) {
+                getEl("input[name=email]").value = parsedSettings.email;
+            };
+            if (parsedSettings.message !== undefined) {
+                getEl("textarea[name=message]").value = parsedSettings.message;
+            };
+        }
     }
 
     listenReload() {
         window.addEventListener('load', this.getStoreValues)
-    }    
-    
-     init() {
-        this.listenReload(); 
+    }
+
+    init() {
+        this.listenReload();
         this.listenInput();
-         this.pushSubmeet();
+        this.pushSubmeet();
     }
 };
 
