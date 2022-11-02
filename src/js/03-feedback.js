@@ -2,13 +2,9 @@ import throttle from 'lodash.throttle';
 
 class InputSaver {
 
-    constructor() {
-        this.getEl = (selector) => document.querySelector(selector);
-    }
-
     pushSubmit() {
-        //let getEl = (selector) => document.querySelector(selector);
-        this.getEl('.feedback-form').addEventListener('submit', (event) => {
+        let getEl = (selector) => document.querySelector(selector);
+        getEl('.feedback-form').addEventListener('submit', (event) => {
             event.preventDefault();
 
             let settings = localStorage.getItem("feedback-form-state");
@@ -17,7 +13,7 @@ class InputSaver {
             console.log(parsedSettings);
 
             localStorage.clear();
-
+            this.getStoreValues();
         });
 
     };
@@ -42,16 +38,16 @@ class InputSaver {
             //console.log(valueEl);
         }
 
-        localStorage.setItem("tttttt", JSON.stringify(settings));
+        localStorage.setItem("feedback-form-state", JSON.stringify(settings));
         //console.log(settings);
     }
 
 
     listenInput() {
-        //let getEl = (selector) => document.querySelector(selector);
-        this.getEl('.feedback-form').addEventListener('input', throttle(() => {
+        let getEl = (selector) => document.querySelector(selector);
+        getEl('.feedback-form').addEventListener('input', throttle(() => {
             if (event !== undefined) {
-                console.log(event.target);
+                //console.log(event.target);
 
                 let valueEl = event.target.value;
                 let typeEL = event.target.type;
@@ -69,15 +65,18 @@ class InputSaver {
         let settings = localStorage.getItem("feedback-form-state");
         let parsedSettings = JSON.parse(settings);
 
-        //let getEl = (selector) => document.querySelector(selector);
+        let getEl = (selector) => document.querySelector(selector);
 
         if (parsedSettings !== null) {
             if (parsedSettings.email !== undefined) {
-                this.getEl("input[name=email]").value = parsedSettings.email;
+                getEl("input[name=email]").value = parsedSettings.email;
             };
             if (parsedSettings.message !== undefined) {
-                this.getEl("textarea[name=message]").value = parsedSettings.message;
+                getEl("textarea[name=message]").value = parsedSettings.message;
             };
+        } else {
+            getEl("input[name=email]").value = "";
+            getEl("textarea[name=message]").value = "";
         }
     }
 
