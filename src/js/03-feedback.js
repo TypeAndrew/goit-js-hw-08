@@ -7,8 +7,8 @@ class InputSaver {
     }
 
     pushSubmit() {
-        let getEl = (selector) => document.querySelector(selector);
-        this.getEl('.feedback-form').addEventListener('submit', () => {
+        //let getEl = (selector) => document.querySelector(selector);
+        this.getEl('.feedback-form').addEventListener('submit', (event) => {
             event.preventDefault();
 
             let settings = localStorage.getItem("feedback-form-state");
