@@ -1,10 +1,14 @@
 import throttle from 'lodash.throttle';
 
+
 class InputSaver {
+    constructor() {
+        this.getEl = (selector) => document.querySelector(selector);
+    } 
 
     pushSubmit() {
-        let getEl = (selector) => document.querySelector(selector);
-        getEl('.feedback-form').addEventListener('submit', (event) => {
+        
+        this.getEl('.feedback-form').addEventListener('submit', (event) => {
             event.preventDefault();
 
             let settings = localStorage.getItem("feedback-form-state");
@@ -44,8 +48,8 @@ class InputSaver {
 
 
     listenInput() {
-        let getEl = (selector) => document.querySelector(selector);
-        getEl('.feedback-form').addEventListener('input', throttle(() => {
+       // let getEl = (selector) => document.querySelector(selector);
+        this.getEl('.feedback-form').addEventListener('input', throttle(() => {
             if (event !== undefined) {
                 //console.log(event.target);
 
@@ -65,18 +69,18 @@ class InputSaver {
         let settings = localStorage.getItem("feedback-form-state");
         let parsedSettings = JSON.parse(settings);
 
-        let getEl = (selector) => document.querySelector(selector);
+        //let getEl = (selector) => document.querySelector(selector);
 
         if (parsedSettings !== null) {
             if (parsedSettings.email !== undefined) {
-                getEl("input[name=email]").value = parsedSettings.email;
+                this.getEl("input[name=email]").value = parsedSettings.email;
             };
             if (parsedSettings.message !== undefined) {
-                getEl("textarea[name=message]").value = parsedSettings.message;
+                this.getEl("textarea[name=message]").value = parsedSettings.message;
             };
         } else {
-            getEl("input[name=email]").value = "";
-            getEl("textarea[name=message]").value = "";
+            this.getEl("input[name=email]").value = "";
+            this.getEl("textarea[name=message]").value = "";
         }
     }
 
